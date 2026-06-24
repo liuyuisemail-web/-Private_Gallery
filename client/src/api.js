@@ -1,4 +1,4 @@
-const API_BASE = 'http://161.118.211.109:3002';
+const API_BASE = '';
 
 let token = localStorage.getItem('token');
 
