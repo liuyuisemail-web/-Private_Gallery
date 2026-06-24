@@ -13,6 +13,7 @@ import { generateToken, authMiddleware, JWT_SECRET } from './auth.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3001;
+app.set('trust proxy', true);
 
 function getBaseUrl(req) {
   return process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
