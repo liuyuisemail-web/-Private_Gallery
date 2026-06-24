@@ -1,0 +1,10 @@
+{
+  "name": "private-gallery",
+  "version": "1.0.0",
+  "description": "私人图库 - 可上传图片并生成分享URL",
+  "scripts": {
+    "server": "cd server && node index.js",
+    "client": "cd client && npx vite --host",
+    "dev": "start cmd /c \"cd server && node index.js\" && cd client && npx vite --host"
+  }
+}
