@@ -14,6 +14,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+function getBaseUrl(req) {
+  return process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+}
+
 app.use(cors());
 app.use(express.json());
 
@@ -101,7 +105,7 @@ app.post('/api/images', authMiddleware, upload.single('image'), (req, res) => {
     'INSERT INTO images (user_id, filename, original_name, share_id, mime_type, size) VALUES (?, ?, ?, ?, ?, ?)'
   ).run(req.user.id, req.file.filename, req.file.originalname, shareId, req.file.mimetype, req.file.size);
 
-  const baseUrl = `${req.protocol}://${req.get('host')}`;
+  const baseUrl = getBaseUrl(req);
   res.json({
     id: result.lastInsertRowid,
     shareId,
@@ -117,7 +121,7 @@ app.get('/api/images', authMiddleware, (req, res) => {
   const images = db.prepare(
     'SELECT id, original_name, share_id, mime_type, size, created_at FROM images WHERE user_id = ? ORDER BY created_at DESC'
   ).all(req.user.id);
-  const baseUrl = `${req.protocol}://${req.get('host')}`;
+  const baseUrl = getBaseUrl(req);
   res.json(images.map(img => ({
     ...img,
     shareUrl: `${baseUrl}/s/${img.share_id}`,
