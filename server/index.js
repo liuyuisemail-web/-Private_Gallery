@@ -16,7 +16,9 @@ const PORT = process.env.PORT || 3001;
 app.set('trust proxy', true);
 
 function getBaseUrl(req) {
-  return process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+  if (process.env.BASE_URL) return process.env.BASE_URL;
+  const proto = req.get('X-Forwarded-Proto') || req.protocol;
+  return `${proto}://${req.get('host')}`;
 }
 
 app.use(cors());
